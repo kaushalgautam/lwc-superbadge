@@ -1,4 +1,7 @@
 {
+    "tabWidth": 4,
+    "useTabs": true,
+    "printWidth": 160,
   "trailingComma": "none",
   "overrides": [
     {
