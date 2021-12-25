@@ -39,11 +39,14 @@ export default class BoatMap extends LightningElement {
 
 	// Getting record's location to construct map markers using recordId
 	// Wire the getRecord method using ('$boatId')
-	@wire(getRecord, { recordId: "$recordId", fields: BOAT_FIELDS })
+	@wire(getRecord, { recordId: "$boatId", fields: BOAT_FIELDS })
 	wiredRecord({ error, data }) {
 		// Error handling
 		if (data) {
 			this.error = undefined;
+			console.dir("wire is fired in boatMap.js");
+			console.dir("data: ");
+			console.dir(data);
 			const longitude = data.fields.Geolocation__Longitude__s.value;
 			const latitude = data.fields.Geolocation__Latitude__s.value;
 			this.updateMap(longitude, latitude);
@@ -62,7 +65,16 @@ export default class BoatMap extends LightningElement {
 			return;
 		}
 		// Subscribe to the message channel to retrieve the recordId and explicitly assign it to boatId.
-		this.subscription = subscribe(this.messageContext, BOATMC, (recordId) => (this.boatId = recordId), { scope: APPLICATION_SCOPE });
+		this.subscription = subscribe(
+			this.messageContext,
+			BOATMC,
+			(message) => {
+				console.log("Message received: ");
+				console.dir(message.recordId);
+				this.boatId = message.recordId;
+			},
+			{ scope: APPLICATION_SCOPE }
+		);
 	}
 
 	// Calls subscribeMC()
