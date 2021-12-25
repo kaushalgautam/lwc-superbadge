@@ -16,13 +16,11 @@ export default class BoatSearchForm extends LightningElement {
 	boatTypes({ error, data }) {
 		if (data) {
 			this.searchOptions = data.map((type) => {
-				console.dir(type);
 				return {
 					label: type.Name,
 					value: type.Id
 				};
 			});
-			console.dir(this.searchOptions);
 			this.searchOptions.unshift({ label: "All Types", value: "" });
 		} else if (error) {
 			this.searchOptions = undefined;
